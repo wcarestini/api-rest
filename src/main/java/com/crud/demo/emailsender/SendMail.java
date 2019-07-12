@@ -14,10 +14,10 @@ public class SendMail {
 			Email email = new SimpleEmail();
 			email.setHostName("smtp.googlemail.com");
 			email.setSmtpPort(465);
-			email.setAuthenticator(new DefaultAuthenticator("wcarestini@gmail.com","c@restini69"));
+			email.setAuthenticator(new DefaultAuthenticator("js511706@gmail.com","silv@123"));
 			email.setSSLOnConnect(true);
 			
-			email.setFrom("wcarestini@gmail.com");
+			email.setFrom("js511706@gmail.com");
 			email.setSubject("Confirmação de cadastro");
 			email.setMsg("Cadastro efetuado com sucesso!");
 			email.addTo(emailDestinatario);

@@ -6,6 +6,10 @@ import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.crud.demo.util.LocalDateDeserializer;
 import com.crud.demo.util.LocalDateSerializer;
@@ -23,17 +27,24 @@ public class User implements Serializable {
 	@GeneratedValue	
 	private Long id;
 	
+	@NotNull
 	private String fullName;
 	
+	@NotNull
 	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate dateOfBith;
 	
+	@NotNull
+	@CPF
 	private String cpf;
 	
+	@NotNull
 	private String rg;
 	
+	@NotNull
+	@Email
 	private String email;
 
 	public User() {

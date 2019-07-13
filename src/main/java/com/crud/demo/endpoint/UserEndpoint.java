@@ -29,6 +29,7 @@ public class UserEndpoint {
 	
 	@PostMapping(path = "/users")
 	public ResponseEntity<?> save(@RequestBody User user){
+		verifyIfUserExistByEmailAndCpf(user.getEmail(), user.getCpf());
 		new SendMail().sendTo(user.getEmail());
 		return new ResponseEntity<>(dao.save(user), HttpStatus.CREATED);
 	}
@@ -45,5 +46,10 @@ public class UserEndpoint {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
  	
+	public void verifyIfUserExistByEmailAndCpf(String email, String cpf) {
+		if(dao.findByEmail(email) != null || dao.findByCpf(cpf) != null) {
+			throw new RuntimeException("A user with this email or cpf already exist");
+		}
+	}
 	
 }

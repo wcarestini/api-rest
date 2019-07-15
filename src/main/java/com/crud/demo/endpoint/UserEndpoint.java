@@ -12,44 +12,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crud.demo.emailsender.SendMail;
 import com.crud.demo.entity.User;
-import com.crud.demo.repository.UserRepository;
+import com.crud.demo.service.UserService;
 
 @RestController
 @RequestMapping("v1")
 public class UserEndpoint {
+	
 	@Autowired
-	private UserRepository dao;
+	private UserService service;
 	
 	@GetMapping(path = "/users")
 	public ResponseEntity<?> listAll() {
-		return new ResponseEntity<>(dao.findAll(), HttpStatus.OK);
+		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/users")
 	public ResponseEntity<?> save(@RequestBody User user){
-		verifyIfUserExistByEmailAndCpf(user.getEmail(), user.getCpf());
-		new SendMail().sendTo(user.getEmail());
-		return new ResponseEntity<>(dao.save(user), HttpStatus.CREATED);
+		return new ResponseEntity<>(service.save(user), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(path = "/users/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
-		dao.deleteById(id);
+		service.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PutMapping(path = "/users")
 	public ResponseEntity<?> update(@RequestBody User user){
-		dao.save(user);
+		service.update(user);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
  	
-	public void verifyIfUserExistByEmailAndCpf(String email, String cpf) {
-		if(dao.findByEmail(email) != null || dao.findByCpf(cpf) != null) {
-			throw new RuntimeException("A user with this email or cpf already exist");
-		}
-	}
-	
 }

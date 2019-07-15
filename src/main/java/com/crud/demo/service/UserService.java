@@ -20,6 +20,10 @@ public class UserService {
 		return dao.findAll();
 	}
 	
+	public User findById(Long id) {
+		return dao.getOne(id);
+	}
+	
 	public User save(User user) {
 		verifyIfUserExistByEmailAndCpf(user.getEmail(), user.getCpf());
 		new SendMail().sendTo(user.getEmail());
@@ -30,8 +34,8 @@ public class UserService {
 		dao.deleteById(id);
 	}
 	
-	public void update(User user) {
-		dao.save(user);
+	public User update(User user) {
+		return dao.save(user);
 	}
 	
 	public void verifyIfUserExistByEmailAndCpf(String email, String cpf) {
@@ -39,5 +43,5 @@ public class UserService {
 			throw new RuntimeException("A user with this email or cpf already exist");
 		}
 	}
-	
+
 }

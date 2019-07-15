@@ -1,4 +1,4 @@
-package com.crud.demo.endpoint;
+package com.crud.demo.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,32 +16,36 @@ import com.crud.demo.entity.User;
 import com.crud.demo.service.UserService;
 
 @RestController
-@RequestMapping("v1")
-public class UserEndpoint {
+@RequestMapping("v1/users")
+public class UserResource {
 	
 	@Autowired
 	private UserService service;
 	
-	@GetMapping(path = "/users")
+	@GetMapping
 	public ResponseEntity<?> listAll() {
 		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/users")
+	@GetMapping(path="{id}")
+	public ResponseEntity<?> findById(@PathVariable Long id){
+		return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
+	}
+	
+	@PostMapping
 	public ResponseEntity<?> save(@RequestBody User user){
 		return new ResponseEntity<>(service.save(user), HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping(path = "/users/{id}")
+	@DeleteMapping(path = "{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		service.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PutMapping(path = "/users")
+	@PutMapping
 	public ResponseEntity<?> update(@RequestBody User user){
-		service.update(user);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(service.update(user),HttpStatus.OK);
 	}
  	
 }
